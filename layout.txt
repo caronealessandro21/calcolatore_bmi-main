@@ -1,0 +1,7 @@
+Realizza il layout di un'app web Calcolatore BMI in stile dashboard scura (dark mode) con 3 pannelli su sfondo grigio chiaro:
+
+Form input (form.html): Scheda bianca con campi per Nome, Peso (kg), Altezza (cm) e pulsante nero "Calcola".
+
+Risultato (bmi.php): Scheda con bordo e sfondo verde chiaro, nome utente, dati inseriti, valore BMI in grande ("22.09"), stato "NORMOPESO" e link "Calcola di nuovo".
+
+Classi di stato: 4 card affiancate con bordi colorati per le categorie BMI: Sottopeso (blu - 16.61), Normopeso (verde - 22.09), Sovrappeso (giallo/arancione - 27.76) e Obesità (rosso - 33.90).

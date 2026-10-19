@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calcolo bmi</title>
+    <style>
+        body{
+            background-color: white;
+        }
+        main{
+            padding-top: 0;
+            padding-bottom: 0;
+            padding-left: 60px;
+            padding-right: 60px;
+        }
+
+        .card{
+            background-color: white ;
+            padding: 24px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            margin-bottom: 24px;
+        }
+
+        .title {
+            margin-bottom: 20px;
+        }
+
+        .rigaForm {
+            margin-bottom: 15px;
+        }
+
+        .rigaForm label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .rigaForm input[type="text"],
+        .rigaForm input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        /* Pulsante nero di invio */
+        .rigaForm input[type="submit"] {
+            width: 100%;
+            padding: 12px;
+            background-color: black;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* 2. Scheda Risultato (Sfondo e bordo verde chiaro) */
+        .card-result {
+            background-color: #e8f5e9;
+            border: 2px solid #4caf50;
+            display: none; /* Nascosta inizialmente */
+        }
+
+        .bmi-value {
+            font-size: 38px;
+            font-weight: bold;
+            color: #2e7d32;
+            margin: 10px 0;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            background-color: #2e7d32;
+            color: white;
+            font-weight: bold;
+            border-radius: 12px;
+        }
+
+        /* 3. Classi di Stato (4 Card affiancate) */
+        .status-grid {
+            display: flex;
+            gap: 15px;
+        }
+
+        .status-card {
+            flex: 1;
+            background-color: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            border-top: 5px solid #ccc;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .status-card.sottopeso { border-color: #2196f3; }  /* Blu */
+        .status-card.normopeso { border-color: #4caf50; }  /* Verde */
+        .status-card.sovrappeso { border-color: #ff9800; } /* Giallo/Arancione */
+        .status-card.obesita    { border-color: #f44336; }  /* Rosso */
+
+        .status-card h4 {
+            margin: 0 0 8px 0;
+        }
+
+        .status-card .valore {
+            font-size: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<main>
+    <h1 class="title">Calcolo BMI</h1>
+
+    <div class="card">
+        <form id="index.php" method="post" class="box-card">
+            <div class="rigaForm">
+                <label for="nome">Nome:</label>
+                <input type="text" id="nome" name="nome" placeholder="Inserisci il tuo nome" required>
+            </div>
+
+            <div class="rigaForm">
+                <label for="peso">Peso (kg):</label>
+                <input type="number" step="0.1" id="peso" name="peso" placeholder="Es. 70" required>
+            </div>
+
+            <div class="rigaForm">
+                <label for="altezza">Altezza (cm):</label>
+                <input type="number" id="altezza" name="altezza" placeholder="Es. 178" required>
+            </div>
+
+            <div class="rigaForm">
+                <input type="submit" name="calcola" value="Calcola">
+            </div>
+        </form>
+    </div>
+
+    <!-- 2. Scheda Risultato (Verde chiaro) -->
+    <div id="resultCard" class="card card-result">
+        <h2>Risultato del Calcolo</h2>
+        <p><strong>Utente:</strong> <span id="resNome"></span></p>
+        <p><strong>Dati:</strong> <span id="resDati"></span></p>
+        <div class="bmi-value" id="resBmi">22.09</div>
+        <span class="status-badge" id="resStato">NORMOPESO</span>
+        <br><br>
+        <a href="#" onclick="resetForm(event)" style="color: #2e7d32; font-weight: bold;">Calcola di nuovo</a>
+    </div>
+
+    <!-- 3. Classi di Stato (4 Card affiancate) -->
+    <div>
+        <h3>Classi di Stato BMI</h3>
+        <div class="status-grid">
+            <div class="status-card sottopeso">
+                <h4>Sottopeso</h4>
+                <p>&lt; 18.5</p>
+                <div class="valore">16.61</div>
+            </div>
+
+            <div class="status-card normopeso">
+                <h4>Normopeso</h4>
+                <p>18.5 - 24.9</p>
+                <div class="valore">22.09</div>
+            </div>
+
+            <div class="status-card sovrappeso">
+                <h4>Sovrappeso</h4>
+                <p>25.0 - 29.9</p>
+                <div class="valore">27.76</div>
+            </div>
+
+            <div class="status-card obesita">
+                <h4>Obesità</h4>
+                <p>&ge; 30.0</p>
+                <div class="valore">33.90</div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!--<script>
+    function calcolaBMI(event) {
+        event.preventDefault();
+
+        // Lettura dei campi
+        const nome = document.getElementById('nome').value;
+        const peso = parseFloat(document.getElementById('peso').value);
+        const altezzaCm = parseFloat(document.getElementById('altezza').value);
+
+        if (peso > 0 && altezzaCm > 0) {
+            const altezzaM = altezzaCm / 100;
+            const bmi = peso / (altezzaM * altezzaM);
+            const bmiFormatted = bmi.toFixed(2);
+
+            let stato = '';
+            if (bmi < 18.5) {
+                stato = 'SOTTOPESO';
+            } else if (bmi >= 18.5 && bmi <= 24.9) {
+                stato = 'NORMOPESO';
+            } else if (bmi >= 25.0 && bmi <= 29.9) {
+                stato = 'SOVRAPPESO';
+            } else {
+                stato = 'OBESITÀ';
+            }
+
+            // Aggiornamento dei dati nella scheda risultato
+            document.getElementById('resNome').innerText = nome;
+            document.getElementById('resDati').innerText = `${peso} kg | ${altezzaCm} cm`;
+            document.getElementById('resBmi').innerText = bmiFormatted;
+            document.getElementById('resStato').innerText = stato;
+
+            // Mostra la scheda del risultato
+            document.getElementById('resultCard').style.display = 'block';
+        }
+    }
+
+    function resetForm(event) {
+        event.preventDefault();
+        document.getElementById('bmiForm').reset();
+        document.getElementById('resultCard').style.display = 'none';
+    }
+</script>-->
+
+</body>
+</html>
