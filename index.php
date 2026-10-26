@@ -1,4 +1,60 @@
 <?php
+if($_SERVER["REQUEST_METHOD"]=="POST"){
+    $method="post";
+}else{
+    $method="get";
+}
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <?php
+        echo $method;
+        if($_SERVER[$method]=="get"){
+    ?>
+     <h1 class="title">Calcolo BMI</h1>
+
+    <!-- 2. FORM DI INSERIMENTO -->
+    <div class="card">
+        <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST">
+            <div class="rigaForm">
+                <label for="nome">Nome:</label>
+                <input type="text" id="nome" name="nome" value="<?php echo $nome; ?>" required>
+            </div>
+
+            <div class="rigaForm">
+                <label for="peso">Peso (kg):</label>
+                <input type="number" step="0.1" id="peso" name="peso" value="<?php echo $peso > 0 ? $peso : ''; ?>" required>
+            </div>
+
+            <div class="rigaForm">
+                <label for="altezza">Altezza (cm):</label>
+                <input type="number" id="altezza" name="altezza" value="<?php echo $altezza_cm > 0 ? $altezza_cm : ''; ?>" required>
+            </div>
+
+            <div class="rigaForm">
+                <input type="submit" name="calcola" value="Calcola">
+            </div>
+        </form>
+    </div>
+    <?php
+    }else{
+        echo "qui mostro i risultati"
+    }
+    ?>
+</body>
+</html>
+
+
+
+
+
+
 // 1. ELABORAZIONE DEI DATI INVIATI
 $nome = "";
 $peso = 0;
@@ -108,31 +164,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
 
 <main>
-    <h1 class="title">Calcolo BMI</h1>
-
-    <!-- 2. FORM DI INSERIMENTO -->
-    <div class="card">
-        <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST">
-            <div class="rigaForm">
-                <label for="nome">Nome:</label>
-                <input type="text" id="nome" name="nome" value="<?php echo $nome; ?>" required>
-            </div>
-
-            <div class="rigaForm">
-                <label for="peso">Peso (kg):</label>
-                <input type="number" step="0.1" id="peso" name="peso" value="<?php echo $peso > 0 ? $peso : ''; ?>" required>
-            </div>
-
-            <div class="rigaForm">
-                <label for="altezza">Altezza (cm):</label>
-                <input type="number" id="altezza" name="altezza" value="<?php echo $altezza_cm > 0 ? $altezza_cm : ''; ?>" required>
-            </div>
-
-            <div class="rigaForm">
-                <input type="submit" name="calcola" value="Calcola">
-            </div>
-        </form>
-    </div>
+   
 
     <!-- 3. STAMPA DEL RISULTATO VIA PHP -->
     <?php if ($calcolato): ?>
